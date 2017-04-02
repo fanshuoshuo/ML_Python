@@ -1,2 +1,2 @@
-# MechineLearningMatlab
-machine learning algorithms in matlab
+# MachineLearningMatlab
+machine learning algorithms in python
