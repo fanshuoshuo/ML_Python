@@ -20,6 +20,7 @@ from os import listdir
 from os import makedirs
 
 import numpy as np
+from pandas  import read_csv
 
 def load_data(module_path,data_file_name):
 
@@ -33,16 +34,18 @@ def load_data(module_path,data_file_name):
         target_names=np.array(temp[2:])
         data=np.empty((n_samples,n_features))
         target=np.empty((n_samples),dtype=np.int)
-
-        for i ,ir in enumerate(data_file):
+        data_internal=[row for row in data_file]
+        for i ,ir in enumerate(data_internal):
             data[i]=np.asarray(ir[:-1],dtype=np.float64)
             target[i]=np.asarray(ir[-1],dtype=np.int)
 
-    return  data,target
+    return  data_internal,target
+"""
 def load_bankdata(module_path,data_file_name):
 
     with open(join(module_path,data_file_name)) as csv_file:
         data_file=csv.reader(csv_file)
+        next(data_file)
         n_samples=0
         for row in data_file:
             n_samples+=1
@@ -50,11 +53,23 @@ def load_bankdata(module_path,data_file_name):
         n_features=64
         data=np.empty((n_samples,n_features))
         target=np.empty((n_samples))
-
-        for i,ir in enumerate(data_file):
-            data[i]=np.asarray(ir[:-1],dtype=float64)
-            target[i]=np.asarray(ir[-1])
+        row_number=0
+        for row in data_file:
+            data[row_number]=np.asarray(row[:-1],dtype=np.float64)
+            target[row_number]=np.asarray(row[-1])
+            row_number+=1
         return  data,target
+"""
+
+def load_bankdata(module_path,data_file_name):
+
+    bank_data=read_csv(join(module_path,data_file_name))
+    tmp=bank_data.as_matrix()
+
+    data= tmp[:,:-1]
+    target=tmp[:,-1]
+    return data,target
+
 def load_iris():
 
     module_path='/home/shuoshuo/git/ML_Python/datasets/data'
